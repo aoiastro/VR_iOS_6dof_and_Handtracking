@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
+ "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>AR6DoFApp</string>
+
+    <key>CFBundleIdentifier</key>
+    <string>com.example.AR6DoFApp</string>
+
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+
+    <key>CFBundleVersion</key>
+    <string>1</string>
+
+    <key>MinimumOSVersion</key>
+    <string>16.0</string>
+
+    <!-- カメラ -->
+    <key>NSCameraUsageDescription</key>
+    <string>ARのためカメラを使用します。</string>
+
+    <!-- ARKit 必須 -->
+    <key>UIRequiredDeviceCapabilities</key>
+    <array>
+        <string>arkit</string>
+        <string>arm64</string>
+    </array>
+
+    <!-- 横向き専用 -->
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+</dict>
+</plist>
