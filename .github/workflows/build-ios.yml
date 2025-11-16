@@ -1,36 +1,50 @@
-name: Build iOS VR ARKit App (AltStore)
+name: iOS IPA Build
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
-  build-ios:
+  build:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+      - name: Checkout
+      - uses: actions/checkout@v4
+
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v2
+        with:
+          xcode-version: latest
+
+      - name: Resolve SwiftPM Dependencies
+        run: |
+          xcodebuild -resolvePackageDependencies \
+            -scheme VR6DOF
 
       - name: Build Archive
         run: |
-          mkdir build
-
           xcodebuild archive \
-            -scheme AR6DoFApp \
-            -archivePath build/AR6DoFApp.xcarchive \
-            -destination 'generic/platform=iOS'
+            -scheme VR6DOF \
+            -configuration Release \
+            -archivePath build/VR6DOF.xcarchive \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            PROVISIONING_PROFILE_SPECIFIER=""
 
-      - name: Export IPA (no-sign)
+      - name: Export IPA
         run: |
           xcodebuild -exportArchive \
-            -archivePath build/AR6DoFApp.xcarchive \
-            -exportPath build/IPA \
-            -exportOptionsPlist ExportOptions.plist
+            -archivePath build/VR6DOF.xcarchive \
+            -exportOptionsPlist ExportOptions.plist \
+            -exportPath build
 
-      - name: Upload IPA
-        uses: actions/upload-artifact@v3
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: AR6DoF-VR
-          path: build/IPA
+          name: VR6DOF-ipa
+          path: build/*.ipa
+
