@@ -1,12 +1,17 @@
 import SwiftUI
 
 @main
-struct AR6DoFAppMain {
+struct AppMain {
     static func main() {
-        if #available(iOS 16.0, *) {
-            AR6DoFApp().main()
-        } else {
-            fatalError("iOS 16.0以上が必要です")
+        VRApp.main()
+    }
+}
+
+struct VRApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .edgesIgnoringSafeArea(.all)
         }
     }
 }
