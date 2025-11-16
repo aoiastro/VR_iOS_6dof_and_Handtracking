@@ -1,0 +1,36 @@
+name: Build iOS VR ARKit App (AltStore)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Build Archive
+        run: |
+          mkdir build
+
+          xcodebuild archive \
+            -scheme AR6DoFApp \
+            -archivePath build/AR6DoFApp.xcarchive \
+            -destination 'generic/platform=iOS'
+
+      - name: Export IPA (no-sign)
+        run: |
+          xcodebuild -exportArchive \
+            -archivePath build/AR6DoFApp.xcarchive \
+            -exportPath build/IPA \
+            -exportOptionsPlist ExportOptions.plist
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v3
+        with:
+          name: AR6DoF-VR
+          path: build/IPA
